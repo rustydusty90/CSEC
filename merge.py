@@ -1,6 +1,0 @@
-hai
-
-haiku
-
-Hai you
-

@@ -1,0 +1,28 @@
+{
+    "template":
+    {
+        "gdb": "HOTCOG_TEMPLATE.gdb",
+        "provisioning": "AUTHORITATIVE_BOUNDARY",
+        "county": "COUNTY_BOUNDARIES",
+        "fire": "FIRE",
+        "law": "LAW",
+        "medical": "MEDICAL",
+        "muni": "MUNICIPAL_BOUNDARIES",
+        "psap": "PSAP",
+        "rcl": "ROAD_CENTERLINES",
+        "ssap": "SITE_STRUCTURE_POINTS"
+    },
+    
+    "gdb1":
+    {
+        "gdb": "Bosque.gdb",
+        "county": "",
+        "fire": "",
+        "law": "",
+        "medical": "",
+        "muni": "",
+        "psap": "",
+        "rcl": "",
+        "ssap": ""
+    }
+}
