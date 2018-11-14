@@ -14,39 +14,45 @@ purpose
 
 import arcpy, os, json
 
-def main():
-    '''do everything that needs to be done'''
-    
-    # set the location where all the gdbs are
-    dataLocation = r'G:\Testing\forTeamHanna\CSEC_merge'
+scriptLocation = r'G:\Testing\forTeamHanna\CSEC_merge\dust1n\HOTCOG'
 
-    # this is where settings are stored
-    config = r'C:\Workspace\CSEC\config.json'
-
-    # grab data from config file
-    
-    # make sure template is empty and is in proper place
-    checkTemplate(templateGdb)'''returns template GDB name for use in validateFields()/appendData()'''
-
-    defineInputs()'''return interable object for layer mappings to template'''
-
-    validateFields()'''checks the validity of an input field against the target input: output - WARNINGS, Log '''
-
-    appendData(definedInputs, target)'''append inputs that were defined in defineInputs()'''
+##def main():
+##    '''do everything that needs to be done'''
+##
+##    
+##    
+##    # set the location where all the gdbs are
+##    dataLocation = r'G:\Testing\forTeamHanna\CSEC_merge'
+##
+##    # this is where settings are stored
+##    config = r'C:\Workspace\CSEC\config.json'
+##
+##    # grab data from config file
+##    
+##    # make sure template is empty and is in proper place
+##    checkTemplate()"returns template GDB name for use in validateFields()/appendData()"
+##
+##    defineInputs()'''return interable object for layer mappings to template'''
+##
+##    validateFields()'''checks the validity of an input field against the target input: output - WARNINGS, Log '''
+##
+##    appendData(definedInputs, target)'''append inputs that were defined in defineInputs()'''
 
 
 
 def logging(toLog):
     '''perfoms logging for troubleshooting script issues'''
 
-def checkTemplate(gdb):
-    '''iterate through features in template gdb,
-        make sure all feature classes are empty
-        if they're not, run Delete Features tool'''
-
-    if arcpy.Exists(gdb) == False:
-        print 'CANT find it'
-        sys.exit()
+def checkTemplate(sL):
+    try:
+        for root, dirs, files in os.walk(os.path.join(sL,'Settings')):
+            print files
+    except:
+        print('nah')
+ 
+##    if arcpy.Exists() == False:
+##        print 'CANT find it'
+##        sys.exit()
     
 
 def appendData():
@@ -75,4 +81,4 @@ def defineInputs():
 
     
 
-main()
+checkTemplate(scriptLocation)
