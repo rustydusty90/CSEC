@@ -1,7 +1,6 @@
 {
     "template":
     {
-        "gdb": "HOTCOG_TEMPLATE.gdb",
         "provisioning": "AUTHORITATIVE_BOUNDARY",
         "county": "COUNTY_BOUNDARIES",
         "fire": "FIRE",
@@ -13,16 +12,20 @@
         "ssap": "SITE_STRUCTURE_POINTS"
     },
     
-    "gdb1":
+    "Bosque.gdb":
     {
-        "gdb": "Bosque.gdb",
-        "county": "",
-        "fire": "",
+        "county": "counteye",
+        "fire": "fiyer",
         "law": "",
         "medical": "",
         "muni": "",
         "psap": "",
         "rcl": "",
         "ssap": ""
-    }
+    },
+	
+	"Regional_HOTCOG.gdb":
+	{
+		"provisioning": "AuthoritativeHOTCOG"
+	},
 }
