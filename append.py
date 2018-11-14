@@ -14,55 +14,38 @@ purpose
 
 import arcpy, os, json
 
-scriptLocation = r'G:\Testing\forTeamHanna\CSEC_merge\dust1n\HOTCOG'
 
-##def main():
-##    '''do everything that needs to be done'''
-##
-##    
-##    
-##    # set the location where all the gdbs are
-##    dataLocation = r'G:\Testing\forTeamHanna\CSEC_merge'
-##
-##    # this is where settings are stored
-##    config = r'C:\Workspace\CSEC\config.json'
-##
-##    # grab data from config file
-##    
-##    # make sure template is empty and is in proper place
-##    checkTemplate()"returns template GDB name for use in validateFields()/appendData()"
-##
-##    defineInputs()'''return interable object for layer mappings to template'''
-##
-##    validateFields()'''checks the validity of an input field against the target input: output - WARNINGS, Log '''
-##
-##    appendData(definedInputs, target)'''append inputs that were defined in defineInputs()'''
-
-
-
-def logging(toLog):
-    '''perfoms logging for troubleshooting script issues'''
-
-def checkTemplate(sL):
-    try:
-        for root, dirs, files in os.walk(os.path.join(sL,'Settings')):
-            print files
-    except:
-        print('nah')
- 
-##    if arcpy.Exists() == False:
-##        print 'CANT find it'
-##        sys.exit()
+def main():
+    '''do everything that needs to be done'''
     
+    # set the location where all the gdbs are
+    dataLocation = r'G:\Testing\forTeamHanna\CSEC_merge'
 
-def appendData():
-    '''do the appending'''
-    Append_management (inputs, target,'NO_TEST')
-
+    # this is where settings are stored
+    config = r'C:\Workspace\CSEC\Settings\config.json'
     
+    # make sure template is empty and is in proper place
+    checkTemplate(templateGdb)'''returns template GDB name for use in validateFields()/appendData()'''
 
-def validateFields():
-    '''validate source field is <= target field'''
+    # read settings and prepare them for later use
+    defineInputs()'''return interable object for layer mappings to template'''
+
+    # grab data from config file
+    validateFields()'''checks the validity of an input field against the target input: output - WARNINGS, Log '''
+
+    appendData(definedInputs, target)'''append inputs that were defined in defineInputs()'''
+
+
+
+def checkTemplate(gdb):
+    '''iterate through features in template gdb,
+        make sure all feature classes are empty
+        if they're not, run Delete Features tool'''
+
+    if arcpy.Exists(gdb) == False:
+        print 'CANT find it'
+        sys.exit()
+
 
 def defineInputs():
     '''This function will get the inputs and structure them in a way that
@@ -72,13 +55,19 @@ def defineInputs():
 
     templateDict = data['template']
     templateGdb = os.path.join(dataLocation, templateDict.get('gdb'))
+
+
+def validateFields():
+    '''validate source field is <= target field'''
+
+
+def appendData():
+    '''do the appending'''
+    Append_management (inputs, target,'NO_TEST')
+
     
-
-
-
-
-
-
+def logging(toLog):
+    '''perfoms logging for troubleshooting script issues'''
     
 
 checkTemplate(scriptLocation)
