@@ -14,6 +14,7 @@ purpose
 
 import arcpy, os, json
 
+
 def main():
     '''do everything that needs to be done'''
     
@@ -69,4 +70,4 @@ def logging(toLog):
     '''perfoms logging for troubleshooting script issues'''
     
 
-main()
+checkTemplate(scriptLocation)
