@@ -14,18 +14,18 @@
     
     "Bosque.gdb":
     {
-        "county": "counteye",
-        "fire": "fiyer",
-        "law": "",
-        "medical": "",
-        "muni": "",
-        "psap": "",
-        "rcl": "",
-        "ssap": ""
+        "county": "County035",
+        "fire": "fire035",
+        "law": "Law035",
+        "medical": "EMS035",
+        "muni": "City035",
+        "psap": "PSAP035",
+        "rcl": "Roads035",
+        "ssap": "Driveway035"
     },
 	
 	"Regional_HOTCOG.gdb":
 	{
 		"provisioning": "AuthoritativeHOTCOG"
-	},
+	}
 }
