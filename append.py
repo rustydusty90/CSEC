@@ -14,8 +14,6 @@ purpose
 
 import arcpy, os, json, sys
 
-
-
 def main():
     #Define Global Variables
     relativePath = os.getcwd()
@@ -28,16 +26,18 @@ def main():
     config = r'C:\Workspace\CSEC\Settings\config.json'
     
     # make sure template is empty and is in proper place
-    gdbPath = checkTemplate(templateGdb) #returns template GDB name for use in validateFields()/appendData()
+    
 
     # read settings and prepare them for later use
     '''return interable object for layer mappings to template'''
-    data, templateLayers, inputGdbs = defineInputs(dataLocation, templateGdb, config)
+    data, templateLayers, inputGdbs = defineInputs(dataLocation, config)
+
+    gdbPath = checkTemplate(relativePath,templateLayers) #returns template GDB name for use in validateFields()/appendData()
 
     # grab data from config file
-    validateFields() #checks the validity of an input field against the target input: output - WARNINGS, Log 
+    #validateFields() checks the validity of an input field against the target input: output - WARNINGS, Log 
 
-    appendData(definedInputs, target) #append inputs that were defined in defineInputs()
+    #appendData(definedInputs, target) #append inputs that were defined in defineInputs()
 
     
     
@@ -45,7 +45,7 @@ def main():
 
 
 
-def checkTemplate(scriptLoc):
+def checkTemplate(scriptLoc, configTempLayers):
     '''iterate through features in template gdb,
     make sure all feature classes are empty
     if they're not, run Delete Features tool'''
@@ -64,9 +64,11 @@ def checkTemplate(scriptLoc):
             
     #Verify only one Template.GDB in settings location
     if gdb == None:
+        #placeholder for logging
         print("No Template GDB found in the settings folder")
         sys.exit()
     elif iteration >1:
+        #placeholder for logging
         print("Multiple GDBs found in settings folder")
         sys.exit()
     else:
@@ -75,10 +77,17 @@ def checkTemplate(scriptLoc):
         layers = arcpy.ListFeatureClasses(gdb)
         for layer in layers:
             arcpy.DeletFeatures_management(layer)
-        return gdbPath
+        for tL in configTempLayers:
+            value = configTempLayers.get(tL)
+            if value in layers:
+                print(value + " is properly mapped to the template GDB")
+            else:
+                print(value + " does not match any layer in the template GDB")       
+                
+    return gdbPath
 
 
-def defineInputs(dataLocation, templateGdb, config):
+def defineInputs(dataLocation, config):
     '''This function will get the inputs and structure them in a way that
     can be used by the append'''
 
@@ -110,8 +119,6 @@ def appendData():
 def logging(toLog):
     '''perfoms logging for troubleshooting script issues'''
     
-
-=======
 
 main()
 
