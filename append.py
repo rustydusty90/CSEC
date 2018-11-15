@@ -12,8 +12,10 @@ purpose
     submitted to GeoComm's GIS Data Hub
 '''
 
-import arcpy, os, json
+import arcpy, os, json, sys
 
+#Define Global Variables
+relativePath = os.getcwd()
 
 def main():
     '''do everything that needs to be done'''
@@ -24,33 +26,54 @@ def main():
     # this is where settings are stored
     config = r'C:\Workspace\CSEC\Settings\config.json'
     
-##    # make sure template is empty and is in proper place
-##    '''returns template GDB name for use in validateFields()/appendData()'''
-##    checkTemplate(templateGdb)
-    templateGdb = os.path.join(dataLocation, 'Settings', 'HOTCOG_TEMPLATE.gdb')
+
+
+    # make sure template is empty and is in proper place
+    checkTemplate(templateGdb) #returns template GDB name for use in validateFields()/appendData()
+
+    # grab data from config file
+    validateFields() #checks the validity of an input field against the target input: output - WARNINGS, Log 
+
+    appendData(definedInputs, target) #append inputs that were defined in defineInputs()
 
     # read settings and prepare them for later use
     '''return interable object for layer mappings to template'''
     data, templateLayers, inputGdbs = defineInputs(dataLocation, templateGdb, config)
 
-##    # grab data from config file
-##    '''checks the validity of an input field against the target input: output - WARNINGS, Log '''
-##    validateFields()
-##
-##    # do the appending
-##    '''append inputs that were defined in defineInputs()'''
-##    appendData(definedInputs, target)
 
 
 
-def checkTemplate(gdb):
+def checkTemplate(scriptLoc):
     '''iterate through features in template gdb,
-        make sure all feature classes are empty
-        if they're not, run Delete Features tool'''
-
-    if arcpy.Exists(gdb) == False:
-        print 'CANT find it'
+    make sure all feature classes are empty
+    if they're not, run Delete Features tool'''
+    #Set local variables for processing
+    settings = os.path.join(scriptLoc,"Settings")
+    gdb = None
+    iteration = 0
+    good = False
+    
+    #Walk through folders inside the 'Settings' folder to find a GDB
+    for root, dirs, files in  os.walk(settings):
+        if ".gdb" in root:
+            iteration += 1
+            gdbPath = root
+            gdb = os.path.basename(root)
+            
+    #Verify only one Template.GDB in settings location
+    if gdb == None:
+        print("No Template GDB found in the settings folder")
         sys.exit()
+    elif iteration >1:
+        print("Multiple GDBs found in settings folder")
+        sys.exit()
+    else:
+        good = True
+        arcpy.env.workspace = gdbPath
+        layers = arcpy.ListFeatureClasses(gdb)
+        for layer in layers:
+            arcpy.DeletFeatures_management(layer)
+        return gdbPath
 
 
 def defineInputs(dataLocation, templateGdb, config):
@@ -86,4 +109,7 @@ def logging(toLog):
     '''perfoms logging for troubleshooting script issues'''
     
 
+=======
+
 main()
+
