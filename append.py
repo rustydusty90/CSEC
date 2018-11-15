@@ -12,9 +12,7 @@ purpose
     submitted to GeoComm's GIS Data Hub
 '''
 
-import arcpy, os, json, sys
-
-
+import arcpy, os, json, sys, shutil
 
 def main():
     #Define Global Variables
@@ -29,20 +27,19 @@ def main():
     
     # make sure template is empty and is in proper place
     gdbPath = checkTemplate(templateGdb) #returns template GDB name for use in validateFields()/appendData()
+    #gdbPath = r'G:\Testing\forTeamHanna\CSEC_merge\n8\HOTCOG\Settings\HOTCOG_TEMPLATE.gdb'
 
     # read settings and prepare them for later use
-    '''return interable object for layer mappings to template'''
-    data, templateLayers, inputGdbs = defineInputs(dataLocation, templateGdb, config)
+    '''return data (dictionary of entire config file),
+        templateLayers (names of template layers),
+        and inputGdbs, a list of input gdbs that can be used to access attributes'''
+    data, templateLayers, inputGdbs = defineInputs(dataLocation, config)
 
     # grab data from config file
     validateFields() #checks the validity of an input field against the target input: output - WARNINGS, Log 
 
-    appendData(definedInputs, target) #append inputs that were defined in defineInputs()
-
-    
-    
-
-
+    # append!
+    appendData(gdbPath, data, templateLayers, inputGdbs) 
 
 
 def checkTemplate(scriptLoc):
@@ -78,9 +75,11 @@ def checkTemplate(scriptLoc):
         return gdbPath
 
 
-def defineInputs(dataLocation, templateGdb, config):
+def defineInputs(dataLocation, config):
     '''This function will get the inputs and structure them in a way that
     can be used by the append'''
+
+    print('\nObtaining settings from configuration file')
 
     # access the contents of the config file
     # this will return a dictionary of dictionaries
@@ -91,9 +90,7 @@ def defineInputs(dataLocation, templateGdb, config):
     templateLayers = data.get('template')
 
     # create a list of the input gdbs
-    inputGdbs = [key for key in data.keys() if key != 'template']
-
-    print inputGdbs
+    inputGdbs = sorted([key for key in data.keys() if key != 'template'])
 
     return data, templateLayers, inputGdbs
 
@@ -102,16 +99,42 @@ def validateFields():
     '''validate source field is <= target field'''
 
 
-def appendData():
-    '''do the appending'''
-    arcpy.Append_management (inputs, target,'NO_TEST')
+def appendData(gdbPath, data, templateLayers, inputGdbs):
+    '''do the appending, one gdb at a time'''
+
+    # delete last merged gdb, copy template into gdb that will be used for appending
+    finalGdb = r'G:\Testing\forTeamHanna\CSEC_merge\n8\HOTCOG\HOTCOG_merged.gdb'
+    shutil.rmtree(finalGdb)
+    shutil.copytree(gdbPath, finalGdb)
+
+    # iterate through input gdbs
+    for gdb in inputGdbs:
+        print('\nAppending ' + gdb)
+        
+        # set the path
+        inputPath = os.path.join(r'G:\Testing\forTeamHanna\CSEC_merge\n8\HOTCOG\InputGDBs', gdb)
+
+        # get the dictionary with this gdb's layers
+        gdbDict = data.get(gdb)
+
+        # iterate through layers
+        for layer in sorted(gdbDict):
+
+            # get the names of the layers to append
+            inputName = gdbDict.get(layer)
+            targetName = templateLayers.get(layer)
+            print ('\t', inputName, ' -> ', targetName)
+
+            # do the append
+            arcpy.Append_management(os.path.join(inputPath, inputName),
+                                    os.path.join(finalGdb, targetName), 'NO_TEST')
+
+    print('\nDone with appending')
 
     
 def logging(toLog):
     '''perfoms logging for troubleshooting script issues'''
     
-
-=======
 
 main()
 
