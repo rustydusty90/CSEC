@@ -15,9 +15,10 @@ purpose
 import arcpy, os, json, sys, shutil
 
 def main():
+    '''do everything that needs to be done'''
+    
     #Define Global Variables
     relativePath = os.getcwd()
-    '''do everything that needs to be done'''
     
     # set the location where all the gdbs are
     dataLocation = r'G:\Testing\forTeamHanna\CSEC_merge\n8\HOTCOG'
@@ -34,7 +35,7 @@ def main():
     gdbPath = checkTemplate(relativePath,templateLayers) #returns template GDB name for use in validateFields()/appendData()
 
     # grab data from config file
-    #validateFields() checks the validity of an input field against the target input: output - WARNINGS, Log 
+    validateFields() checks the validity of an input field against the target input: output - WARNINGS, Log 
 
     # append!
     appendData(gdbPath, data, templateLayers, inputGdbs) 
@@ -109,9 +110,14 @@ def validateFields():
 def appendData(gdbPath, data, templateLayers, inputGdbs):
     '''do the appending, one gdb at a time'''
 
-    # delete last merged gdb, copy template into gdb that will be used for appending
     finalGdb = r'G:\Testing\forTeamHanna\CSEC_merge\n8\HOTCOG\HOTCOG_merged.gdb'
-    shutil.rmtree(finalGdb)
+
+    # check if finalGdb exists before deleting it
+    if os.path.exists(finalGdb):
+        print '\nDeleting previous merged gdb'
+        shutil.rmtree(finalGdb)
+        
+    # copy template into gdb that will be used for appending
     shutil.copytree(gdbPath, finalGdb)
 
     # iterate through input gdbs
@@ -130,7 +136,7 @@ def appendData(gdbPath, data, templateLayers, inputGdbs):
             # get the names of the layers to append
             inputName = gdbDict.get(layer)
             targetName = templateLayers.get(layer)
-            print ('\t', inputName, ' -> ', targetName)
+            print ('\t {} -> {}').format(inputName, targetName)
 
             # do the append
             arcpy.Append_management(os.path.join(inputPath, inputName),
