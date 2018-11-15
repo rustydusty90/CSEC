@@ -25,24 +25,22 @@ def main():
     # this is where settings are stored
     config = r'C:\Workspace\CSEC\Settings\config.json'
     
-    # make sure template is empty and is in proper place
-    gdbPath = checkTemplate(templateGdb) #returns template GDB name for use in validateFields()/appendData()
-    #gdbPath = r'G:\Testing\forTeamHanna\CSEC_merge\n8\HOTCOG\Settings\HOTCOG_TEMPLATE.gdb'
-
     # read settings and prepare them for later use
     '''return data (dictionary of entire config file),
         templateLayers (names of template layers),
         and inputGdbs, a list of input gdbs that can be used to access attributes'''
     data, templateLayers, inputGdbs = defineInputs(dataLocation, config)
 
+    gdbPath = checkTemplate(relativePath,templateLayers) #returns template GDB name for use in validateFields()/appendData()
+
     # grab data from config file
-    validateFields() #checks the validity of an input field against the target input: output - WARNINGS, Log 
+    #validateFields() checks the validity of an input field against the target input: output - WARNINGS, Log 
 
     # append!
     appendData(gdbPath, data, templateLayers, inputGdbs) 
 
 
-def checkTemplate(scriptLoc):
+def checkTemplate(scriptLoc, configTempLayers):
     '''iterate through features in template gdb,
     make sure all feature classes are empty
     if they're not, run Delete Features tool'''
@@ -61,9 +59,11 @@ def checkTemplate(scriptLoc):
             
     #Verify only one Template.GDB in settings location
     if gdb == None:
+        #placeholder for logging
         print("No Template GDB found in the settings folder")
         sys.exit()
     elif iteration >1:
+        #placeholder for logging
         print("Multiple GDBs found in settings folder")
         sys.exit()
     else:
@@ -72,7 +72,14 @@ def checkTemplate(scriptLoc):
         layers = arcpy.ListFeatureClasses(gdb)
         for layer in layers:
             arcpy.DeletFeatures_management(layer)
-        return gdbPath
+        for tL in configTempLayers:
+            value = configTempLayers.get(tL)
+            if value in layers:
+                print(value + " is properly mapped to the template GDB")
+            else:
+                print(value + " does not match any layer in the template GDB")       
+                
+    return gdbPath
 
 
 def defineInputs(dataLocation, config):
