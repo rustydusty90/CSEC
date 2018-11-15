@@ -14,10 +14,11 @@ purpose
 
 import arcpy, os, json, sys
 
-#Define Global Variables
-relativePath = os.getcwd()
+
 
 def main():
+    #Define Global Variables
+    relativePath = os.getcwd()
     '''do everything that needs to be done'''
     
     # set the location where all the gdbs are
@@ -26,19 +27,20 @@ def main():
     # this is where settings are stored
     config = r'C:\Workspace\CSEC\Settings\config.json'
     
-
-
     # make sure template is empty and is in proper place
-    checkTemplate(templateGdb) #returns template GDB name for use in validateFields()/appendData()
+    gdbPath = checkTemplate(templateGdb) #returns template GDB name for use in validateFields()/appendData()
+
+    # read settings and prepare them for later use
+    '''return interable object for layer mappings to template'''
+    data, templateLayers, inputGdbs = defineInputs(dataLocation, templateGdb, config)
 
     # grab data from config file
     validateFields() #checks the validity of an input field against the target input: output - WARNINGS, Log 
 
     appendData(definedInputs, target) #append inputs that were defined in defineInputs()
 
-    # read settings and prepare them for later use
-    '''return interable object for layer mappings to template'''
-    data, templateLayers, inputGdbs = defineInputs(dataLocation, templateGdb, config)
+    
+    
 
 
 
