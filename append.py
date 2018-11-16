@@ -32,13 +32,13 @@ def main():
         and inputGdbs, a list of input gdbs that can be used to access attributes'''
     data, templateLayers, inputGdbs = defineInputs(dataLocation, config)
 
-    gdbPath = checkTemplate(relativePath,templateLayers) #returns template GDB name for use in validateFields()/appendData()
+    #gdbPath = checkTemplate(relativePath,templateLayers) #returns template GDB name for use in validateFields()/appendData()
 
     # grab data from config file
-    validateFields() checks the validity of an input field against the target input: output - WARNINGS, Log 
+    #validateFields(templateLayers, inputGdbs, gdbPath) #checks the validity of an input field against the target input: output - WARNINGS, Log 
 
     # append!
-    appendData(gdbPath, data, templateLayers, inputGdbs) 
+    #appendData(gdbPath, data, templateLayers, inputGdbs) 
 
 
 def checkTemplate(scriptLoc, configTempLayers):
@@ -103,8 +103,16 @@ def defineInputs(dataLocation, config):
     return data, templateLayers, inputGdbs
 
 
-def validateFields():
+def validateFields(tempLayers, inGdbs, gdbPath):
+    #hurting my brain, will have to hold off on this
     '''validate source field is <= target field'''
+    
+    templateMap = [tL for tL in tempLayers]
+    
+    for tM in templateMap:
+        value = tempLayers.get(tM)
+        
+    
 
 
 def appendData(gdbPath, data, templateLayers, inputGdbs):
