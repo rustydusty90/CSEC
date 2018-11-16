@@ -23,6 +23,54 @@
         "rcl": "Roads035",
         "ssap": "Driveway035"
     },
+    
+    "Falls.gdb":
+    {
+        "county": "Data\\County145",
+        "fire": "Data\\fire145",
+        "law": "Data\\Law145",
+        "medical": "Data\\EMS145",
+        "muni": "Data\\city145",
+        "psap": "Data\\PSAP145",
+        "rcl": "Data\\Roads145",
+        "ssap": "Data\\Driveway145"
+    },
+
+    "Freestone.gdb":
+    {
+        "county": "Data\\County161",
+        "fire": "Data\\fire161",
+        "law": "Data\\Law161",
+        "medical": "Data\\EMS161",
+        "muni": "Data\\CITY161",
+        "psap": "Data\\PSAP161",
+        "rcl": "Data\\Roads161",
+        "ssap": "Data\\Driveway161"
+    },
+    
+    "Hill.gdb":
+    {
+        "county": "Data\\County217",
+        "fire": "Data\\fire217",
+        "law": "Data\\Law217",
+        "medical": "Data\\ems_217",
+        "muni": "Data\\city217",
+        "psap": "Data\\PSAP217",
+        "rcl": "Data\\Roads217",
+        "ssap": "Data\\Driveway217"
+    },
+
+    "Limestone.gdb":
+    {
+        "county": "Data\\County293",
+        "fire": "Data\\fire293",
+        "law": "Data\\Law293",
+        "medical": "Data\\EMS293",
+        "muni": "Data\\city293",
+        "psap": "Data\\PSAP293",
+        "rcl": "Data\\Roads293",
+        "ssap": "Data\\Driveway293"
+    },
 	
 	"Regional_HOTCOG.gdb":
 	{
